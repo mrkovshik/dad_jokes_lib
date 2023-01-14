@@ -1,11 +1,12 @@
-package main
+package dadJokes
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
-	"text/template"
 	"net/http"
 	"os"
+	"text/template"
 )
 
 type joke struct {
@@ -28,7 +29,7 @@ type joke struct {
 		} `json:"body"`
 	}
 
-func main() {
+func makeJoke() string {
 
 	const templ = `
 	Today's amazing joke for you:
@@ -53,15 +54,17 @@ func main() {
 
 
 	var awesomeJoke joke
-	fmt.Println("res.Body closed:", res.Body == nil)
 
 
 	if err := json.NewDecoder(res.Body).Decode(&awesomeJoke); err != nil {
-		fmt.Println("oops %v",err)
+		fmt.Println("oops",err)
 		}
 		fmt.Printf("%+v", awesomeJoke.Body[0])
-	if err := report.Execute(os.Stdout, awesomeJoke.Body[0]); err != nil {
-		fmt.Println(err)
-		}
+		var buffer bytes.Buffer
 
+if err := report.Execute(&buffer, awesomeJoke.Body[0]); err != nil {
+    fmt.Println(err)
+}
+return buffer.String()
+ 
 }
