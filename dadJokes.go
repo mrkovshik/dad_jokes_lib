@@ -29,7 +29,7 @@ type joke struct {
 	} `json:"body"`
 }
 
-func makeJoke() string {
+func MakeJoke() string {
 	const templ = `
 	Today's amazing joke for you:
 
