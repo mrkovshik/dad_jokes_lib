@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"html"
 	"net/http"
-	"os"
 	"text/template"
 )
 
@@ -29,7 +28,7 @@ type joke struct {
 	} `json:"body"`
 }
 
-func MakeJoke() string {
+func MakeJoke(api string) string {
 	const templ = `
 	Today's amazing joke for you:
 
@@ -42,7 +41,7 @@ func MakeJoke() string {
 	var report = template.Must(template.New("jokeTempl").Parse(templ))
 	url := "https://dad-jokes.p.rapidapi.com/random/joke"
 	req, _ := http.NewRequest("GET", url, nil)
-	req.Header.Add("X-RapidAPI-Key", (os.Getenv("RAPID_API_KEY")))
+	req.Header.Add("X-RapidAPI-Key", api)
 	req.Header.Add("X-RapidAPI-Host", "dad-jokes.p.rapidapi.com")
 	res, err := http.DefaultClient.Do(req)
 	if err != nil{
