@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"html"
 	"net/http"
 	"os"
 	"text/template"
@@ -58,6 +59,8 @@ func makeJoke() string {
 	if err := report.Execute(&buffer, awesomeJoke.Body[0]); err != nil {
 		fmt.Println(err)
 	}
-	return buffer.String()
+	encodedString :=  buffer.String()          //это нужно, чтобы не было проблем со спецсимволами
+	decodedString:= html.UnescapeString(encodedString)
+		return decodedString
 
 }
